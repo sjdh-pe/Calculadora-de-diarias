@@ -1,0 +1,123 @@
+import { cargos, destinos, tabela } from './parametros-diarias.js';
+import { moeda, parseDate, formatarData } from './utils/formatadores.js';
+import { dayDiff, classificarRetorno } from './utils/datas.js';
+import { imprimirResumo } from './utils/impressao.js';
+import { elementosIds } from './utils/elementos.js'
+
+export function iniciarCalculadora() {
+  const el = Object.fromEntries(elementosIds.map(id => [id, document.getElementById(id)]));
+
+  function popularSelects() {
+    el.cargo.innerHTML = '<option value="">Selecione</option>' + cargos.map(c => `<option value="${c.nome}">${c.nome}</option>`).join('');
+    el.destino.innerHTML = '<option value="">Selecione</option>' + destinos.map(d => `<option value="${d}">${d}</option>`).join('');
+  }
+
+  // Refatorado
+  function popularTabelas() {
+    const colunas = ['Capitais (exceto Recife)', 'Brasília/Manaus', 'SP/RJ/BH/POA/Belém/Fortaleza/Salvador', 'Demais cidades fora do Estado', 'Dentro do Estado'];
+    const gerarLinhas = (tipo) => ['1', '2', '3'].map(g => 
+      `<tr><td>${g}</td>${colunas.map(col => `<td>${moeda(tabela[g][tipo][col])}</td>`).join('')}</tr>`
+    ).join('');
+
+    el.tabelaCargos.innerHTML = cargos.map(c => `<tr><td>${c.nome}</td><td>${c.grupo}</td></tr>`).join('');
+    el.tabelaIntegral.innerHTML = gerarLinhas('integral');
+    el.tabelaParcial.innerHTML = gerarLinhas('parcial');
+  }
+
+  function atualizarGrupo() {
+    el.grupo.value = cargos.find(c => c.nome === el.cargo.value)?.grupo || '';
+  }
+
+  function resetSaidas() {
+    ['diasCorridos', 'pernoites', 'retornoEspecial', 'motivoRetorno', 'qtdIntegrais', 'qtdParciais', 'valorIntegral', 'valorParcial', 'totalGeral', 'printCargo', 'printGrupo', 'printDestino', 'printPeriodo', 'printRetorno', 'printQuantitativo', 'printValores', 'printTotal']
+      .forEach(id => el[id].textContent = '—');
+    el.resumo.textContent = '';
+    el.printObservacao.textContent = 'Preencha os campos para gerar o resumo do cálculo.';
+  }
+
+  function setAlert(tipo, texto) {
+    el.alerta.className = `alert ${tipo}`;
+    el.alerta.textContent = texto;
+  }
+
+  function calcular() {
+    atualizarGrupo();
+
+    const { value: grupo } = el.grupo;
+    const { value: destino } = el.destino;
+    const saida = parseDate(el.saida.value);
+    const retorno = parseDate(el.retorno.value);
+
+    if (!grupo || !destino || !saida || !retorno) {
+      resetSaidas();
+      return setAlert('warn', 'Preencha cargo/função, destino e datas para calcular.');
+    }
+
+    if (retorno < saida) {
+      resetSaidas();
+      return setAlert('bad', 'A data de retorno não pode ser anterior à data de saída.');
+    }
+
+    const diff = dayDiff(saida, retorno);
+    const diasCorridos = diff + 1;
+    const pernoites = Math.max(0, diff);
+    const retornoInfo = classificarRetorno(retorno, el.feriadoMunicipal.checked);
+    const vInt = tabela[grupo].integral[destino];
+    const vPar = tabela[grupo].parcial[destino];
+
+    let qtdInt = pernoites + (retornoInfo.especial ? 1 : 0);
+    let qtdPar = retornoInfo.especial ? Math.max(0, (diasCorridos > 0 ? 1 : 0) - 1) : (diasCorridos > 0 ? 1 : 0);
+    const total = (qtdInt * vInt) + (qtdPar * vPar);
+
+    // Atualiza a tela (Formulário)
+    el.diasCorridos.textContent = diasCorridos;
+    el.pernoites.textContent = pernoites;
+    el.retornoEspecial.textContent = retornoInfo.especial ? 'Sim' : 'Não';
+    el.motivoRetorno.textContent = retornoInfo.motivo;
+    el.qtdIntegrais.textContent = qtdInt;
+    el.qtdParciais.textContent = qtdPar;
+    el.valorIntegral.textContent = moeda(vInt);
+    el.valorParcial.textContent = moeda(vPar);
+    el.totalGeral.textContent = moeda(total);
+    el.resumo.textContent = `Cálculo: ${qtdInt} diária(s) integral(is) + ${qtdPar} diária(s) parcial(is), no destino “${destino}”, para beneficiário do grupo ${grupo}.`;
+    
+    // Atualiza a tela (Área de Impressão)
+    el.printCargo.textContent = el.cargo.value || '—';
+    el.printGrupo.textContent = grupo;
+    el.printDestino.textContent = destino;
+    el.printPeriodo.textContent = `${formatarData(saida)} a ${formatarData(retorno)}`;
+    el.printRetorno.textContent = retornoInfo.especial ? `Integral automático (${retornoInfo.motivo})` : 'Parcial';
+    el.printQuantitativo.textContent = `${qtdInt} integral(is) e ${qtdPar} parcial(is)`;
+    el.printValores.textContent = `Integral: ${moeda(vInt)} | Parcial: ${moeda(vPar)}`;
+    el.printTotal.textContent = moeda(total);
+
+    // Refatorado
+    const msg = retornoInfo.especial 
+      ? `Retorno tratado automaticamente como diária integral. Motivo: ${retornoInfo.motivo}.` 
+      : 'Cálculo realizado pela regra padrão: pernoites geram diárias integrais e o retorno gera diária parcial.';
+    el.printObservacao.textContent = msg;
+    setAlert('ok', msg);
+  }
+
+  function limparFormulario() {
+    el.cargo.value = el.destino.value = el.saida.value = el.retorno.value = '';
+    el.feriadoMunicipal.checked = false;
+    atualizarGrupo();
+    resetSaidas();
+    setAlert('warn', 'Preencha cargo/função, destino e datas para calcular.');
+  }
+
+  // Event Listeners
+  ['change', 'input'].forEach(evt => {
+    [el.cargo, el.destino, el.saida, el.retorno, el.feriadoMunicipal].forEach(item => item.addEventListener(evt, calcular));
+  });
+
+  el.imprimirResumoBtn.addEventListener('click', imprimirResumo);
+  el.limparFormularioBtn.addEventListener('click', limparFormulario);
+
+  // Inicialização
+  popularSelects();
+  popularTabelas();
+  atualizarGrupo();
+  resetSaidas();
+}
