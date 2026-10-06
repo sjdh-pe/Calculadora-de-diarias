@@ -1,0 +1,23 @@
+@media print {
+  body {
+    height: auto;
+    overflow: visible;
+  }
+
+  body > *:not(#printRoot) {
+    display: none !important;
+  }
+
+  #printRoot {
+    display: block !important;
+  }
+
+  @page {
+    margin: 10mm;
+    size: A4 portrait;
+  }
+
+  #printArea::before {
+    display: none;
+  }
+}

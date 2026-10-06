@@ -1,6 +1,6 @@
 // refatorado
 export const Assinatura = () => `
-  <section class="assinatura-box">
+  <footer class="assinatura-box">
     <div class="assinatura-topo">
       <span class="bandeira-pontos" aria-hidden="true">
         <span style="background:#0057a8"></span>
@@ -14,5 +14,5 @@ export const Assinatura = () => `
       <div><strong>Criação e arte:</strong> Evandro Almeida — Gerente de Projetos — SEPES — junho/2026</div>
       <div><strong>Secretário Executivo de Equidade Social:</strong> Sérgio Vieira da Silva</div>
     </div>
-  </section>
+  </footer>
 `;

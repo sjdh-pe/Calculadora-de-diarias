@@ -1,0 +1,67 @@
+.hero {
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--brand) 0%, #0f5fa3 56%, #1e7bb8 100%);
+  color: #fff;
+  border-radius: 18px;
+  padding: 26px 24px 24px;
+  box-shadow: 0 16px 38px rgba(0, 87, 168, 0.18);
+  margin-bottom: 20px;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #ffffff 0%, #ffffff 18%, var(--accent-yellow) 18%, var(--accent-yellow) 36%, var(--accent-green) 36%, var(--accent-green) 54%, var(--accent-red) 54%, var(--accent-red) 72%, #ffffff 72%, #ffffff 100%);
+  opacity: .95;
+}
+
+.hero h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  letter-spacing: -.02em;
+}
+
+.hero p {
+  margin: 0;
+  line-height: 1.5;
+  opacity: .97;
+  max-width: 980px;
+}
+
+.top-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 10px 24px rgba(17, 24, 39, 0.06);
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  border-radius: 18px 18px 0 0;
+  background: linear-gradient(90deg, var(--brand), var(--accent-yellow), var(--accent-green));
+  opacity: .9;
+}
+
+.card h2 {
+  margin: 0 0 14px;
+  font-size: 18px;
+  color: var(--brand-2);
+}

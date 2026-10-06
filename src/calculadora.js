@@ -3,6 +3,7 @@ import { moeda, parseDate, formatarData } from './utils/formatadores.js';
 import { dayDiff, classificarRetorno } from './utils/datas.js';
 import { imprimirResumo } from './utils/impressao.js';
 import { elementosIds } from './utils/elementos.js'
+import { salvarDiaria } from './api/api.js';
 
 export function iniciarCalculadora() {
   const el = Object.fromEntries(elementosIds.map(id => [id, document.getElementById(id)]));
@@ -29,7 +30,7 @@ export function iniciarCalculadora() {
   }
 
   function resetSaidas() {
-    ['diasCorridos', 'pernoites', 'retornoEspecial', 'motivoRetorno', 'qtdIntegrais', 'qtdParciais', 'valorIntegral', 'valorParcial', 'totalGeral', 'printCargo', 'printGrupo', 'printDestino', 'printPeriodo', 'printRetorno', 'printQuantitativo', 'printValores', 'printTotal']
+    ['diasCorridos', 'pernoites', 'retornoEspecial', 'motivoRetorno', 'qtdIntegrais', 'qtdParciais', 'valorIntegral', 'valorParcial', 'totalGeral', 'printCargo', 'printGrupo', 'printDestino', 'printPeriodo', 'printRetorno', 'printQuantitativo', 'printValores', 'printTotal', 'printNome']
       .forEach(id => el[id].textContent = '—');
     el.resumo.textContent = '';
     el.printObservacao.textContent = 'Preencha os campos para gerar o resumo do cálculo.';
@@ -82,6 +83,7 @@ export function iniciarCalculadora() {
     el.resumo.textContent = `Cálculo: ${qtdInt} diária(s) integral(is) + ${qtdPar} diária(s) parcial(is), no destino “${destino}”, para beneficiário do grupo ${grupo}.`;
     
     // Atualiza a tela (Área de Impressão)
+    el.printNome.textContent = el.nomeFuncionario.value || '—';
     el.printCargo.textContent = el.cargo.value || '—';
     el.printGrupo.textContent = grupo;
     el.printDestino.textContent = destino;
@@ -97,9 +99,38 @@ export function iniciarCalculadora() {
       : 'Cálculo realizado pela regra padrão: pernoites geram diárias integrais e o retorno gera diária parcial.';
     el.printObservacao.textContent = msg;
     setAlert('ok', msg);
+
+    const dataformatada = new Date().toISOString().split('T')[0]; 
+    const retornoEspecialString = retornoInfo.especial ? "SIM" : "NÃO";
+
+    const dadosParaSalvar = {
+      user_id: null,
+      user_name: null,
+      data: dataformatada,
+
+      nome_funcionario: el.nomeFuncionario.value || null,
+      grupo: el.grupo.value || null,
+      cargo_funcionario: el.cargo.value || null,
+      tipo_destino: destino,
+      data_saida: el.saida.value || null,
+      data_retorno: el.retorno.value || null,
+      
+      dias_corridos: diasCorridos,
+      pernoites: pernoites,
+      retorno_especial: retornoEspecialString,
+      quantidade_integrais: qtdInt,
+      quantidade_parciais: qtdPar,
+      valor_integrais: vInt,
+      valor_parciais: vPar,
+      total_calculado: total,
+    }
+
+    // Chama a função para salvar os dados na API
+    salvarDiaria(dadosParaSalvar);
   }
 
   function limparFormulario() {
+    el.nomeFuncionario.value = '';
     el.cargo.value = el.destino.value = el.saida.value = el.retorno.value = '';
     el.feriadoMunicipal.checked = false;
     atualizarGrupo();
@@ -107,10 +138,8 @@ export function iniciarCalculadora() {
     setAlert('warn', 'Preencha cargo/função, destino e datas para calcular.');
   }
 
-  // Event Listeners
-  ['change', 'input'].forEach(evt => {
-    [el.cargo, el.destino, el.saida, el.retorno, el.feriadoMunicipal].forEach(item => item.addEventListener(evt, calcular));
-  });
+  el.calcularBtn.addEventListener('click', calcular);
+  el.cargo.addEventListener('change', atualizarGrupo);
 
   el.imprimirResumoBtn.addEventListener('click', imprimirResumo);
   el.limparFormularioBtn.addEventListener('click', limparFormulario);

@@ -1,0 +1,48 @@
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--brand-2);
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 11px 12px;
+  font-size: 14px;
+  background: #fff;
+  color: var(--ink);
+}
+
+input[readonly] {
+  background: #f9fafb;
+  color: #374151;
+  font-weight: 700;
+}
+
+.check-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.check-box input {
+  width: auto;
+  transform: scale(1.2);
+}
+
+.hint {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.45;
+}

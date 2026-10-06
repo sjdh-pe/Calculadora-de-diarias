@@ -1,0 +1,45 @@
+.assinatura-box {
+  flex-shrink: 0;
+  margin-top: 20px;
+  background: linear-gradient(135deg, rgba(0, 87, 168, 0.08), rgba(255, 255, 255, 0.98));
+  border: 1px solid rgba(0, 87, 168, 0.12);
+  border-radius: 18px;
+  padding: 18px 20px;
+  box-shadow: 0 10px 24px rgba(0, 87, 168, 0.07);
+}
+
+.assinatura-topo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--brand-2);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.bandeira-pontos {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.bandeira-pontos span {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  display: inline-block;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, .75);
+}
+
+.assinatura-texto {
+  font-size: 14px;
+  color: var(--brand-2);
+  line-height: 1.6;
+}
+
+.assinatura-texto strong {
+  color: var(--brand);
+}
