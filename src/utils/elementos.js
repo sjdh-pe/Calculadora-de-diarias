@@ -5,5 +5,5 @@ export const elementosIds = [
   'totalGeral', 'resumo', 'alerta', 'tabelaCargos', 'tabelaIntegral',
   'tabelaParcial', 'printCargo', 'printGrupo', 'printDestino', 'printPeriodo',
   'printRetorno', 'printQuantitativo', 'printValores', 'printTotal', 'printObservacao', 'imprimirResumoBtn', 'limparFormularioBtn',
-  'nomeFuncionario', 'printNome', 'calcularBtn'
+  'nomeFuncionario', 'printNome', 'calcularBtn', 'salvarBtn'
 ];

@@ -2,8 +2,10 @@ export const Calculo = () => `
   <section class="card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
       <h2 style="margin: 0;">Cálculo</h2>
-      <!-- Botão Calcular mantido no topo para fácil acesso -->
-      <button id="calcularBtn" style="padding: 10px 20px; cursor: pointer; background-color: #0d75b3; color: white; border: none; border-radius: 5px; font-weight: bold; font-size: 16px;">Calcular</button>
+      <div style="display: flex; gap: 10px;">
+        <button id="calcularBtn" style="padding: 10px 20px; cursor: pointer; background-color: #0d75b3; color: white; border: none; border-radius: 5px; font-weight: bold; font-size: 16px;">Calcular</button>
+        <button id="salvarBtn" style="padding: 10px 20px; cursor: pointer; background-color: #198754; color: white; border: none; border-radius: 5px; font-weight: bold; font-size: 16px;">Salvar</button>
+      </div>
     </div>
 
     <!-- WRAPPER PARA DIVIDIR A TELA (Lado a Lado) -->

@@ -9,6 +9,7 @@ Os valores parametrizados na aplicação têm como referência o Decreto nº 55.
 - Seleção do cargo/função e classificação automática do grupo.
 - Seleção do tipo de destino e preenchimento das datas da viagem.
 - Cálculo sob demanda pelo botão **Calcular**.
+- Salvamento sob demanda na API pelo botão **Salvar**.
 - Cálculo de dias corridos, pernoites, quantidades integrais e parciais, valores e total.
 - Tratamento automático de sábado, domingo e feriado nacional no retorno como retorno integral.
 - Opção para marcar feriado municipal no retorno.
@@ -16,7 +17,7 @@ Os valores parametrizados na aplicação têm como referência o Decreto nº 55.
 - Impressão ou exportação do resumo para PDF pelo botão **Imprimir / PDF**.
 - Consulta das tabelas de diárias integrais e parciais em uma aba própria.
 - Consulta dos grupos por cargo/função e das regras de retorno na aba **Parâmetros e Configurações**.
-- Envio dos dados do cálculo para a API local configurada no frontend.
+- Envio dos dados do cálculo para a API local configurada no frontend somente pelo botão **Salvar**.
 - Navegação por abas; a rolagem do conteúdo ocorre dentro da aba ativa.
 - Rodapé de identidade visual compartilhado por todas as abas.
 
@@ -29,17 +30,19 @@ Os valores parametrizados na aplicação têm como referência o Decreto nº 55.
 
 A identificação visual do projeto aparece uma única vez no rodapé, abaixo da área das abas.
 
-Para atualizar o resumo, preencha os dados e pressione **Calcular**. O formulário não recalcula automaticamente ao alterar cada campo.
+Para atualizar o resumo, preencha os dados e pressione **Calcular**. O cálculo não é salvo automaticamente. Para persistir os dados, pressione **Salvar**. O formulário não recalcula automaticamente ao alterar cada campo.
 
 ## Integração com a API
 
-Após um cálculo válido, o frontend tenta enviar os dados da diária por `POST` em JSON para:
+Ao pressionar **Salvar** com os dados válidos, o frontend envia os dados da diária por `POST` em JSON para a rota `/api/calculo_diarias/registrar`. Durante o desenvolvimento com Vite, essa rota é encaminhada para:
 
 ```text
 http://localhost:8000/calculo_diarias/registrar
 ```
 
-Para persistir os registros, é necessário que um backend esteja executando nesse endereço e aceite o formato de dados enviado pela aplicação. A API não faz parte dos scripts de execução do frontend descritos neste README.
+Para persistir os registros, é necessário que um backend esteja executando em `http://localhost:8000` e aceite o formato de dados enviado pela aplicação. O proxy do Vite, configurado em `vite.config.js`, evita bloqueios de CORS durante o desenvolvimento; em produção, configure o servidor web para encaminhar `/api` ao backend. A API não faz parte dos scripts de execução do frontend descritos neste README.
+
+Caso os registros devam ser enviados ao Google Planilhas, essa integração deve ser feita pelo backend que atende essa rota. O frontend não acessa diretamente a planilha nem contém credenciais do Google; a configuração da API e das permissões da planilha é externa a este projeto.
 
 ## Estrutura do projeto
 
@@ -47,6 +50,7 @@ Para persistir os registros, é necessário que um backend esteja executando nes
 Calculadora-diarias/
 ├── index.html
 ├── package.json
+├── vite.config.js              # proxy local da API durante o desenvolvimento
 ├── README.md
 └── src/
     ├── main.js                  # montagem da interface e navegação
@@ -85,6 +89,7 @@ Calculadora-diarias/
 - HTML5 e CSS3.
 - JavaScript com ES modules, sem framework.
 - Vite para desenvolvimento e build de produção.
+- Google Planilhas como destino de armazenamento, integrado pelo backend da API (configuração externa ao frontend).
 
 ## Como executar
 

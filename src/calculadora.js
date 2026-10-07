@@ -103,7 +103,7 @@ export function iniciarCalculadora() {
     const dataformatada = new Date().toISOString().split('T')[0]; 
     const retornoEspecialString = retornoInfo.especial ? "SIM" : "NÃO";
 
-    const dadosParaSalvar = {
+    return {
       user_id: null,
       user_name: null,
       data: dataformatada,
@@ -123,10 +123,25 @@ export function iniciarCalculadora() {
       valor_integrais: vInt,
       valor_parciais: vPar,
       total_calculado: total,
-    }
+    };
+  }
 
-    // Chama a função para salvar os dados na API
-    salvarDiaria(dadosParaSalvar);
+  async function salvar() {
+    const dadosParaSalvar = calcular();
+    if (!dadosParaSalvar) return;
+
+    el.salvarBtn.disabled = true;
+    setAlert('warn', 'Salvando cálculo...');
+
+    try {
+      await salvarDiaria(dadosParaSalvar);
+      setAlert('ok', 'Cálculo salvo com sucesso.');
+    } catch (erro) {
+      const mensagem = erro instanceof Error ? erro.message : 'Erro desconhecido.';
+      setAlert('bad', `Não foi possível salvar o cálculo. ${mensagem}`);
+    } finally {
+      el.salvarBtn.disabled = false;
+    }
   }
 
   function limparFormulario() {
@@ -139,6 +154,7 @@ export function iniciarCalculadora() {
   }
 
   el.calcularBtn.addEventListener('click', calcular);
+  el.salvarBtn.addEventListener('click', salvar);
   el.cargo.addEventListener('change', atualizarGrupo);
 
   el.imprimirResumoBtn.addEventListener('click', imprimirResumo);
