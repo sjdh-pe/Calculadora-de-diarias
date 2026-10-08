@@ -161,7 +161,7 @@ export async function imprimirResumo() {
     <tfoot>
       <tr>
         <td>
-          <div class="doc-rodape">Central SEPES</div>
+          <div class="doc-rodape">Portal SJDH-PE</div>
         </td>
       </tr>
     </tfoot>
