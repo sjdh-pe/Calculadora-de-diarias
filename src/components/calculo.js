@@ -3,8 +3,8 @@ export const Calculo = () => `
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
       <h2 style="margin: 0;">Cálculo</h2>
       <div style="display: flex; gap: 10px;">
-        <button id="calcularBtn" style="padding: 10px 20px; cursor: pointer; background-color: #0d75b3; color: white; border: none; border-radius: 5px; font-weight: bold; font-size: 16px;">Calcular</button>
-        <button id="salvarBtn" style="padding: 10px 20px; cursor: pointer; background-color: #198754; color: white; border: none; border-radius: 5px; font-weight: bold; font-size: 16px;">Salvar</button>
+        <button id="calcularBtn" class="btn-primary" type="button">Calcular</button>
+        <button id="salvarBtn" class="btn-success" type="button">Salvar</button>
       </div>
     </div>
 
@@ -46,12 +46,14 @@ export const Calculo = () => `
           </div>
 
           <div class="full">
-            <label>Feriado municipal no retorno?</label>
             <div class="check-box">
-              <input id="feriadoMunicipal" type="checkbox" />
-              <span>Marque apenas quando a data de retorno coincidir com feriado municipal.</span>
+              <input id="feriadoMunicipal" type="checkbox" aria-describedby="feriadoMunicipalHint" />
+              <label for="feriadoMunicipal">
+                <strong>Feriado municipal no retorno?</strong><br />
+                Marque apenas quando a data de retorno coincidir com feriado municipal.
+              </label>
             </div>
-            <div class="hint">Sábado, domingo e feriado nacional já contam automaticamente como retorno integral, sem necessidade de marcação.</div>
+            <div class="hint" id="feriadoMunicipalHint">Sábado, domingo e feriado nacional já contam automaticamente como retorno integral, sem necessidade de marcação.</div>
           </div>
         </div>
       </div>
@@ -101,7 +103,7 @@ export const Calculo = () => `
           <div id="resumo" class="hint" style="font-size:14px;margin-top:10px;"></div>
         </div>
 
-        <div id="alerta" class="alert warn" style="margin-top: 15px;">Preencha cargo/função, destino e datas para calcular.</div>
+        <div id="alerta" class="alert warn" role="status" aria-live="polite" tabindex="-1" style="margin-top: 15px;">Preencha cargo/função, destino e datas para calcular.</div>
       </div>
       <!-- ================= FIM DO LADO DIREITO ================= -->
     </div>

@@ -4,8 +4,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
   <title>Cálculo de Diárias</title>
   <link rel="stylesheet" href="/src/style.css">
+  <script>
+    // Aplica o tema antes da primeira pintura para evitar flash
+    (function () {
+      try {
+        var salvo = localStorage.getItem('tema');
+        var escuro = salvo
+          ? salvo === 'escuro'
+          : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (escuro) document.documentElement.setAttribute('data-theme', 'dark');
+      } catch (e) { /* ignora */ }
+    })();
+  </script>
 </head>
 <body>
   <!-- O main.js vai injetar todo o conteúdo aqui dentro -->
