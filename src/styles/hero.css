@@ -21,6 +21,31 @@
   opacity: .95;
 }
 
+/* Cabeçalho institucional: logotipo + ações */
+.hero-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.hero-logo {
+  display: block;
+  height: 44px;
+  width: auto;
+  box-sizing: content-box;
+  padding: 9px 13px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, .20);
+}
+
+.hero-topo .top-actions {
+  margin-top: 0;
+}
+
 .hero h1 {
   margin: 0 0 8px;
   font-size: 28px;
@@ -32,6 +57,17 @@
   line-height: 1.5;
   opacity: .97;
   max-width: 980px;
+}
+
+/* Nome do órgão (sobre o hero azul) */
+.hero p.hero-orgao {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, .9);
 }
 
 .top-actions {
