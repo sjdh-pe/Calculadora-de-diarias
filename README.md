@@ -14,7 +14,7 @@ Os valores parametrizados na aplicação têm como referência o Decreto nº 55.
 - Tratamento automático de sábado, domingo e feriado nacional no retorno como retorno integral.
 - Opção para marcar feriado municipal no retorno.
 - Resumo do cálculo em uma aba própria, atualizado após o cálculo.
-- Impressão ou exportação do resumo para PDF pelo botão **Imprimir / PDF**.
+- Impressão ou exportação para PDF pelo botão **Imprimir / PDF**, reunindo **Resumo do cálculo**, **Tabelas de diárias** e **Parâmetros e Configurações** em um documento no modelo institucional (cabeçalho com logotipo e rodapé).
 - Consulta das tabelas de diárias integrais e parciais em uma aba própria.
 - Consulta dos grupos por cargo/função e das regras de retorno na aba **Parâmetros e Configurações**.
 - Envio dos dados do cálculo para a API local configurada no frontend somente pelo botão **Salvar**.

@@ -36,9 +36,22 @@ export function iniciarCalculadora() {
     el.printObservacao.textContent = 'Preencha os campos para gerar o resumo do cálculo.';
   }
 
+  const camposDoFormulario = ['cargo', 'destino', 'saida', 'retorno'];
+
   function setAlert(tipo, texto) {
     el.alerta.className = `alert ${tipo}`;
     el.alerta.textContent = texto;
+    // Erros são anunciados de imediato (assertivo); avisos e sucesso, de forma educada
+    el.alerta.setAttribute('role', tipo === 'bad' ? 'alert' : 'status');
+    el.alerta.setAttribute('aria-live', tipo === 'bad' ? 'assertive' : 'polite');
+  }
+
+  function limparErrosDeCampo() {
+    camposDoFormulario.forEach(id => el[id].removeAttribute('aria-invalid'));
+  }
+
+  function marcarErroDeCampo(id) {
+    el[id].setAttribute('aria-invalid', 'true');
   }
 
   function calcular() {
@@ -49,14 +62,28 @@ export function iniciarCalculadora() {
     const saida = parseDate(el.saida.value);
     const retorno = parseDate(el.retorno.value);
 
-    if (!grupo || !destino || !saida || !retorno) {
+    limparErrosDeCampo();
+
+    const camposFaltando = [];
+    if (!grupo) camposFaltando.push('cargo');
+    if (!destino) camposFaltando.push('destino');
+    if (!saida) camposFaltando.push('saida');
+    if (!retorno) camposFaltando.push('retorno');
+
+    if (camposFaltando.length) {
       resetSaidas();
-      return setAlert('warn', 'Preencha cargo/função, destino e datas para calcular.');
+      camposFaltando.forEach(marcarErroDeCampo);
+      setAlert('bad', 'Preencha os campos destacados para calcular.');
+      el[camposFaltando[0]].focus();
+      return;
     }
 
     if (retorno < saida) {
       resetSaidas();
-      return setAlert('bad', 'A data de retorno não pode ser anterior à data de saída.');
+      marcarErroDeCampo('retorno');
+      setAlert('bad', 'A data de retorno não pode ser anterior à data de saída.');
+      el.retorno.focus();
+      return;
     }
 
     const diff = dayDiff(saida, retorno);
@@ -149,6 +176,7 @@ export function iniciarCalculadora() {
     el.cargo.value = el.destino.value = el.saida.value = el.retorno.value = '';
     el.feriadoMunicipal.checked = false;
     atualizarGrupo();
+    limparErrosDeCampo();
     resetSaidas();
     setAlert('warn', 'Preencha cargo/função, destino e datas para calcular.');
   }

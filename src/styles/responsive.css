@@ -24,3 +24,22 @@
     font-size: 24px;
   }
 }
+
+@media (max-width: 420px) {
+  .wrap {
+    padding: 12px;
+  }
+
+  .hero {
+    padding: 20px 16px;
+    border-radius: var(--radius-lg);
+  }
+
+  .hero h1 {
+    font-size: 22px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+}
