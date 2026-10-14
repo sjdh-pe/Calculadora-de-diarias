@@ -11,6 +11,7 @@ export function isWeekend(date) {
 }
 
 export function calcularPascoa(ano) {
+  // Algoritmo gregoriano para obter a data móvel usada no cálculo da Paixão de Cristo.
   const a = ano % 19;
   const b = Math.floor(ano / 100);
   const c = ano % 100;
@@ -37,6 +38,7 @@ export function adicionarDias(data, dias) {
 export function getFeriadosNacionais(ano) {
   const pascoa = calcularPascoa(ano);
   const paixaoDeCristo = adicionarDias(pascoa, -2);
+  // A regra considera estes feriados nacionais; calendários municipais não são consultados.
   return new Set([
     `${ano}-01-01`, toISO(paixaoDeCristo), `${ano}-04-21`, `${ano}-05-01`,
     `${ano}-09-07`, `${ano}-10-12`, `${ano}-11-02`, `${ano}-11-15`,
@@ -46,6 +48,7 @@ export function getFeriadosNacionais(ano) {
 
 export function classificarRetorno(date, feriadoMunicipalMarcado) {
   if (!date) return { especial: false, motivo: 'Retorno parcial' };
+  // A marcação manual é considerada antes das regras automáticas para informar o motivo correto.
   if (feriadoMunicipalMarcado) return { especial: true, motivo: 'Feriado municipal' };
   if (isWeekend(date)) return { especial: true, motivo: date.getDay() === 6 ? 'Sábado' : 'Domingo' };
   

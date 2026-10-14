@@ -11,7 +11,7 @@ import { iniciarTabs } from './components/tabs.js';
 // Importamos a função de inicialização da calculadora
 import { iniciarCalculadora } from './calculadora.js';
 
-// Monta a interface na tela
+// Cria primeiro todo o DOM para que a inicialização abaixo encontre os elementos e abas.
 document.getElementById('app').innerHTML = `
   ${Hero()}
 

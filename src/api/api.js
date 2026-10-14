@@ -1,4 +1,5 @@
 export async function salvarDiaria(dadosDaDiaria) {
+    // No desenvolvimento, o proxy do Vite encaminha /api para o backend local.
     const urlDaApi = '/api/calculo_diarias/registrar';
     const resposta = await fetch(urlDaApi, {
         method: 'POST',

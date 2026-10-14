@@ -50,6 +50,7 @@ export function iniciarCalculadora() {
     const saida = parseDate(el.saida.value);
     const retorno = parseDate(el.retorno.value);
 
+    // A mesma validação é usada ao calcular e ao salvar; nome contendo só espaços também é inválido.
     if (!nomeFuncionario || !grupo || !destino || !saida || !retorno) {
       resetSaidas();
       return setAlert('warn', 'Preencha o nome do(a) servidor(a), cargo/função, destino e datas para calcular.');
@@ -67,6 +68,7 @@ export function iniciarCalculadora() {
     const vInt = tabela[grupo].integral[destino];
     const vPar = tabela[grupo].parcial[destino];
 
+    // Cada pernoite é integral; a diária do retorno é integral em dia especial e parcial nos demais casos.
     let qtdInt = pernoites + (retornoInfo.especial ? 1 : 0);
     let qtdPar = retornoInfo.especial ? Math.max(0, (diasCorridos > 0 ? 1 : 0) - 1) : (diasCorridos > 0 ? 1 : 0);
     const total = (qtdInt * vInt) + (qtdPar * vPar);
@@ -104,6 +106,7 @@ export function iniciarCalculadora() {
     const dataformatada = new Date().toISOString().split('T')[0]; 
     const retornoEspecialString = retornoInfo.especial ? "SIM" : "NÃO";
 
+    // Este objeto é o contrato JSON enviado ao backend pela ação Salvar.
     return {
       user_id: null,
       user_name: null,
@@ -128,6 +131,7 @@ export function iniciarCalculadora() {
   }
 
   async function salvar() {
+    // Recalcula e valida imediatamente antes do envio para não salvar resultados desatualizados.
     const dadosParaSalvar = calcular();
     if (!dadosParaSalvar) return;
 
