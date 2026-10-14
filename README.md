@@ -1,126 +1,69 @@
 # Calculadora de Diárias
 
-Aplicação web para cálculo de diárias de viagem com base no cargo ou função, tipo de destino e datas de saída e retorno. A ferramenta calcula as quantidades e os valores de diárias integrais e parciais por grupo, apresenta um resumo detalhado e permite imprimir ou salvar esse resumo em PDF pelo navegador.
+Aplicação web para calcular diárias de viagem a partir do cargo/função, do tipo de destino e do período informado. O projeto usa JavaScript sem framework e Vite para desenvolvimento e geração dos arquivos de produção.
 
-Os valores parametrizados na aplicação têm como referência o Decreto nº 55.723, de 31 de outubro de 2023. O resultado deve ser utilizado considerando a regulamentação vigente e o enquadramento funcional do beneficiário.
+> Os valores atualmente cadastrados no sistema têm como referência o Decreto nº 55.723, de 31 de outubro de 2023. Confirme a regulamentação e os valores vigentes antes de utilizar o resultado para fins administrativos.
 
-## Funcionalidades
+## Acesso à planilha de registros
 
-- Seleção do cargo/função e classificação automática do grupo.
-- Seleção do tipo de destino e preenchimento das datas da viagem.
-- Cálculo sob demanda pelo botão **Calcular**.
-- Salvamento sob demanda na API pelo botão **Salvar**.
-- Cálculo de dias corridos, pernoites, quantidades integrais e parciais, valores e total.
-- Tratamento automático de sábado, domingo e feriado nacional no retorno como retorno integral.
-- Opção para marcar feriado municipal no retorno.
-- Resumo do cálculo em uma aba própria, atualizado após o cálculo.
-- Impressão ou exportação do resumo para PDF pelo botão **Imprimir / PDF**.
-- Consulta das tabelas de diárias integrais e parciais em uma aba própria.
-- Consulta dos grupos por cargo/função e das regras de retorno na aba **Parâmetros e Configurações**.
-- Envio dos dados do cálculo para a API local configurada no frontend somente pelo botão **Salvar**.
-- Navegação por abas; a rolagem do conteúdo ocorre dentro da aba ativa.
-- Rodapé de identidade visual compartilhado por todas as abas.
+[Abrir a planilha de registros](https://docs.google.com/spreadsheets/d/1gxIb8RQm3amF4xNnV8r8AawZOgdejWiOY6jZda1tVhw/edit?gid=0#gid=0)
 
-## Abas da aplicação
+O frontend não lê nem grava diretamente nessa planilha. O botão **Salvar** envia o cálculo para uma API externa ao projeto; a integração dessa API com a planilha, assim como as permissões de acesso, deve ser configurada no backend.
 
-1. **Calculadora** — formulário da viagem, resultados do cálculo e mensagens de validação.
-2. **Resumo do cálculo** — dados do beneficiário, período, quantitativos, valores e observação sobre a regra aplicada.
-3. **Tabelas de diárias** — valores das diárias integrais e parciais por grupo e destino.
-4. **Parâmetros e Configurações** — cargos e grupos, regras de retorno e referência normativa.
+## O que a aplicação oferece
 
-A identificação visual do projeto aparece uma única vez no rodapé, abaixo da área das abas.
+- Seleção de cargo/função com preenchimento automático do grupo.
+- Nome do(a) servidor(a) obrigatório para calcular e salvar.
+- Seleção do tipo de destino e entrada das datas de saída e retorno.
+- Cálculo explícito pelo botão **Calcular**, com quantitativos, valores e total.
+- Retorno tratado como diária integral quando cai em sábado, domingo ou feriado nacional; feriado municipal precisa ser marcado manualmente.
+- Abas para calculadora, resumo imprimível, tabelas de valores e parâmetros.
+- Impressão do resumo ou salvamento em PDF pela janela de impressão do navegador.
+- Envio opcional do cálculo à API pelo botão **Salvar**.
 
-Para atualizar o resumo, preencha os dados e pressione **Calcular**. O cálculo não é salvo automaticamente. Para persistir os dados, pressione **Salvar**. O formulário não recalcula automaticamente ao alterar cada campo.
+O formulário não é persistido no navegador e não há funcionalidade de importar ou exportar JSON. Se a página for recarregada, os valores digitados são perdidos. O cálculo funciona sem backend; somente o salvamento requer a API.
 
-## Integração com a API
+## Executar localmente
 
-Ao pressionar **Salvar** com os dados válidos, o frontend envia os dados da diária por `POST` em JSON para a rota `/api/calculo_diarias/registrar`. Durante o desenvolvimento com Vite, essa rota é encaminhada para:
-
-```text
-http://localhost:8000/calculo_diarias/registrar
-```
-
-Para persistir os registros, é necessário que um backend esteja executando em `http://localhost:8000` e aceite o formato de dados enviado pela aplicação. O proxy do Vite, configurado em `vite.config.js`, evita bloqueios de CORS durante o desenvolvimento; em produção, configure o servidor web para encaminhar `/api` ao backend. A API não faz parte dos scripts de execução do frontend descritos neste README.
-
-Caso os registros devam ser enviados ao Google Planilhas, essa integração deve ser feita pelo backend que atende essa rota. O frontend não acessa diretamente a planilha nem contém credenciais do Google; a configuração da API e das permissões da planilha é externa a este projeto.
-
-## Estrutura do projeto
-
-```text
-Calculadora-diarias/
-├── index.html
-├── package.json
-├── vite.config.js              # proxy local da API durante o desenvolvimento
-├── README.md
-└── src/
-    ├── main.js                  # montagem da interface e navegação
-    ├── calculadora.js           # cálculo, eventos e envio de dados
-    ├── parametros-diarias.js    # cargos, destinos e valores
-    ├── style.css                # ponto de entrada dos estilos
-    ├── api/
-    │   └── api.js               # comunicação com o backend local
-    ├── components/
-    │   ├── assinatura.js        # identidade visual
-    │   ├── calculo.js           # formulário e resultados imediatos
-    │   ├── hero.js              # cabeçalho e ações globais
-    │   ├── parametros.js        # conteúdo da aba de parâmetros
-    │   ├── resumo.js             # conteúdo da aba de resumo
-    │   ├── tabelas.js            # tabelas de valores
-    │   └── tabs.js               # comportamento das abas
-    ├── styles/
-    │   ├── base.css              # variáveis, estilos globais e botões
-    │   ├── forms.css             # campos e formulários
-    │   ├── hero.css              # cabeçalho e cartões
-    │   ├── layout.css            # grids e dimensões
-    │   ├── print.css             # regras de impressão
-    │   ├── responsive.css        # ajustes para telas menores
-    │   ├── results.css           # resultados, alertas e tabelas
-    │   ├── signature.css         # identidade visual
-    │   └── tabs.css              # navegação e rolagem das abas
-    └── utils/
-        ├── datas.js              # diferenças de datas e classificação de retorno
-        ├── elementos.js          # IDs dos elementos usados pela calculadora
-        ├── formatadores.js       # moeda e formatação de datas
-        └── impressao.js          # preparação e impressão do resumo
-```
-
-## Tecnologias
-
-- HTML5 e CSS3.
-- JavaScript com ES modules, sem framework.
-- Vite para desenvolvimento e build de produção.
-- Google Planilhas como destino de armazenamento, integrado pelo backend da API (configuração externa ao frontend).
-
-## Como executar
-
-É necessário ter Node.js e npm instalados.
-
-Instale as dependências:
+Requisitos: Node.js compatível com Vite 8 e npm.
 
 ```bash
 npm install
-```
-
-Inicie o servidor de desenvolvimento:
-
-```bash
 npm run dev
 ```
 
-Abra no navegador o endereço local informado pelo Vite.
+Abra no navegador o endereço local informado pelo Vite. Para desenvolver o salvamento, inicie também um backend na porta `8000`; consulte o [guia do projeto](./docs/GUIA_DO_PROJETO.md) para detalhes da integração.
 
-## Build de produção
-
-Gere os arquivos de produção:
+## Build e pré-visualização
 
 ```bash
 npm run build
-```
-
-Para servir localmente os arquivos gerados:
-
-```bash
 npm run preview
 ```
 
-O build é gerado na pasta `dist/`, que não é versionada.
+O build gera os arquivos estáticos em `dist/`. O comando de build não inicia nem valida a API.
+
+## Documentação para quem está chegando
+
+Consulte o [Guia do projeto](./docs/GUIA_DO_PROJETO.md) para conhecer a arquitetura, as regras de cálculo, o formato enviado à API, as etapas de execução e as orientações para manutenção.
+
+## Estrutura
+
+```text
+Calculadora-diarias/
+├── docs/
+│   └── GUIA_DO_PROJETO.md
+├── index.html
+├── package.json
+├── vite.config.js
+├── README.md
+└── src/
+    ├── main.js
+    ├── calculadora.js
+    ├── parametros-diarias.js
+    ├── style.css
+    ├── api/api.js
+    ├── components/
+    ├── styles/
+    └── utils/
+```

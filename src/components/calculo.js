@@ -16,7 +16,7 @@ export const Calculo = () => `
         <div class="form-grid">
           <div class="full">
             <label for="nomeFuncionario">Nome do(a) Servidor(a)</label>
-            <input id="nomeFuncionario" type="text" placeholder="Digite o nome completo" />
+            <input id="nomeFuncionario" type="text" placeholder="Digite o nome completo" required />
           </div>
 
           <div>
@@ -101,7 +101,7 @@ export const Calculo = () => `
           <div id="resumo" class="hint" style="font-size:14px;margin-top:10px;"></div>
         </div>
 
-        <div id="alerta" class="alert warn" style="margin-top: 15px;">Preencha cargo/função, destino e datas para calcular.</div>
+        <div id="alerta" class="alert warn" style="margin-top: 15px;">Preencha o nome do(a) servidor(a), cargo/função, destino e datas para calcular.</div>
       </div>
       <!-- ================= FIM DO LADO DIREITO ================= -->
     </div>

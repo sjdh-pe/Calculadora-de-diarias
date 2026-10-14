@@ -46,12 +46,13 @@ export function iniciarCalculadora() {
 
     const { value: grupo } = el.grupo;
     const { value: destino } = el.destino;
+    const nomeFuncionario = el.nomeFuncionario.value.trim();
     const saida = parseDate(el.saida.value);
     const retorno = parseDate(el.retorno.value);
 
-    if (!grupo || !destino || !saida || !retorno) {
+    if (!nomeFuncionario || !grupo || !destino || !saida || !retorno) {
       resetSaidas();
-      return setAlert('warn', 'Preencha cargo/função, destino e datas para calcular.');
+      return setAlert('warn', 'Preencha o nome do(a) servidor(a), cargo/função, destino e datas para calcular.');
     }
 
     if (retorno < saida) {
@@ -83,7 +84,7 @@ export function iniciarCalculadora() {
     el.resumo.textContent = `Cálculo: ${qtdInt} diária(s) integral(is) + ${qtdPar} diária(s) parcial(is), no destino “${destino}”, para beneficiário do grupo ${grupo}.`;
     
     // Atualiza a tela (Área de Impressão)
-    el.printNome.textContent = el.nomeFuncionario.value || '—';
+    el.printNome.textContent = nomeFuncionario;
     el.printCargo.textContent = el.cargo.value || '—';
     el.printGrupo.textContent = grupo;
     el.printDestino.textContent = destino;
@@ -108,7 +109,7 @@ export function iniciarCalculadora() {
       user_name: null,
       data: dataformatada,
 
-      nome_funcionario: el.nomeFuncionario.value || null,
+      nome_funcionario: nomeFuncionario,
       grupo: el.grupo.value || null,
       cargo_funcionario: el.cargo.value || null,
       tipo_destino: destino,
@@ -150,7 +151,7 @@ export function iniciarCalculadora() {
     el.feriadoMunicipal.checked = false;
     atualizarGrupo();
     resetSaidas();
-    setAlert('warn', 'Preencha cargo/função, destino e datas para calcular.');
+    setAlert('warn', 'Preencha o nome do(a) servidor(a), cargo/função, destino e datas para calcular.');
   }
 
   el.calcularBtn.addEventListener('click', calcular);
