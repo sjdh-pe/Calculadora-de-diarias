@@ -1,4 +1,8 @@
 .hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
@@ -7,7 +11,36 @@
   border-radius: 18px;
   padding: 26px 24px 24px;
   box-shadow: 0 16px 38px rgba(0, 87, 168, 0.18);
-  margin-bottom: 20px;
+  margin-bottom: 5px;
+}
+
+.hero-conteudo {
+  min-width: 0;
+}
+
+.hero .assinatura-box {
+  flex: 0 1 460px;
+  margin-top: 0;
+  padding: 2px 0 2px 24px;
+  background: transparent;
+  border: 0;
+  border-left: 1px solid rgba(255, 255, 255, .35);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.hero .assinatura-topo {
+  color: #fff;
+}
+
+.hero .assinatura-texto {
+  color: rgba(255, 255, 255, .9);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.hero .assinatura-texto strong {
+  color: #fff;
 }
 
 .hero::after {

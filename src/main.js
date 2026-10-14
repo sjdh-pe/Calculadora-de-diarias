@@ -3,7 +3,6 @@ import { Hero } from './components/hero.js';
 import { Calculo } from './components/calculo.js';
 import { Parametros } from './components/parametros.js';
 import { Tabelas } from './components/tabelas.js';
-import { Assinatura } from './components/assinatura.js';
 import { Resumo } from './components/resumo.js';
 
 // Importamos a função das abas
@@ -50,8 +49,6 @@ document.getElementById('app').innerHTML = `
           ${Parametros()}
       </div>
   </div>
-
-  ${Assinatura()}
 `;
 
 // AGORA que o HTML existe na tela, iniciamos as lógicas
