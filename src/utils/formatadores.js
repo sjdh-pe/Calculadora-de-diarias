@@ -5,6 +5,7 @@ export function moeda(v) {
 export function parseDate(value) {
   if (!value) return null;
   const [y, m, d] = value.split('-').map(Number);
+  // Meio-dia local evita que conversões de fuso desloquem a data para o dia anterior ou seguinte.
   return new Date(y, m - 1, d, 12, 0, 0);
 }
 

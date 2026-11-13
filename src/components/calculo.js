@@ -16,7 +16,7 @@ export const Calculo = () => `
         <div class="form-grid">
           <div class="full">
             <label for="nomeFuncionario">Nome do(a) Servidor(a)</label>
-            <input id="nomeFuncionario" type="text" placeholder="Digite o nome completo" />
+            <input id="nomeFuncionario" type="text" placeholder="Digite o nome completo" required />
           </div>
 
           <div>

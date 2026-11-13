@@ -59,6 +59,7 @@ export function iniciarCalculadora() {
 
     const { value: grupo } = el.grupo;
     const { value: destino } = el.destino;
+    const nomeFuncionario = el.nomeFuncionario.value.trim();
     const saida = parseDate(el.saida.value);
     const retorno = parseDate(el.retorno.value);
 
@@ -93,6 +94,7 @@ export function iniciarCalculadora() {
     const vInt = tabela[grupo].integral[destino];
     const vPar = tabela[grupo].parcial[destino];
 
+    // Cada pernoite é integral; a diária do retorno é integral em dia especial e parcial nos demais casos.
     let qtdInt = pernoites + (retornoInfo.especial ? 1 : 0);
     let qtdPar = retornoInfo.especial ? Math.max(0, (diasCorridos > 0 ? 1 : 0) - 1) : (diasCorridos > 0 ? 1 : 0);
     const total = (qtdInt * vInt) + (qtdPar * vPar);
@@ -110,7 +112,7 @@ export function iniciarCalculadora() {
     el.resumo.textContent = `Cálculo: ${qtdInt} diária(s) integral(is) + ${qtdPar} diária(s) parcial(is), no destino “${destino}”, para beneficiário do grupo ${grupo}.`;
     
     // Atualiza a tela (Área de Impressão)
-    el.printNome.textContent = el.nomeFuncionario.value || '—';
+    el.printNome.textContent = nomeFuncionario;
     el.printCargo.textContent = el.cargo.value || '—';
     el.printGrupo.textContent = grupo;
     el.printDestino.textContent = destino;
@@ -130,12 +132,13 @@ export function iniciarCalculadora() {
     const dataformatada = new Date().toISOString().split('T')[0]; 
     const retornoEspecialString = retornoInfo.especial ? "SIM" : "NÃO";
 
+    // Este objeto é o contrato JSON enviado ao backend pela ação Salvar.
     return {
       user_id: null,
       user_name: null,
       data: dataformatada,
 
-      nome_funcionario: el.nomeFuncionario.value || null,
+      nome_funcionario: nomeFuncionario,
       grupo: el.grupo.value || null,
       cargo_funcionario: el.cargo.value || null,
       tipo_destino: destino,
@@ -154,6 +157,7 @@ export function iniciarCalculadora() {
   }
 
   async function salvar() {
+    // Recalcula e valida imediatamente antes do envio para não salvar resultados desatualizados.
     const dadosParaSalvar = calcular();
     if (!dadosParaSalvar) return;
 
@@ -178,7 +182,7 @@ export function iniciarCalculadora() {
     atualizarGrupo();
     limparErrosDeCampo();
     resetSaidas();
-    setAlert('warn', 'Preencha cargo/função, destino e datas para calcular.');
+    setAlert('warn', 'Preencha o nome do(a) servidor(a), cargo/função, destino e datas para calcular.');
   }
 
   el.calcularBtn.addEventListener('click', calcular);
