@@ -36,3 +36,27 @@
     border-left: 0;
   }
 }
+
+@media (max-width: 420px) {
+  .wrap {
+    padding: 12px;
+  }
+
+  .hero {
+    padding: 20px 16px;
+    border-radius: var(--radius-lg);
+  }
+
+  .hero-logo {
+    height: 34px;
+    padding: 7px 10px;
+  }
+
+  .hero h1 {
+    font-size: 22px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+}

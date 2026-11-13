@@ -6,7 +6,20 @@ Aplicação web para calcular diárias de viagem a partir do cargo/função, do 
 
 ## Acesso à planilha de registros
 
-[Abrir a planilha de registros](https://docs.google.com/spreadsheets/d/1gxIb8RQm3amF4xNnV8r8AawZOgdejWiOY6jZda1tVhw/edit?gid=0#gid=0)
+- Seleção do cargo/função e classificação automática do grupo.
+- Seleção do tipo de destino e preenchimento das datas da viagem.
+- Cálculo sob demanda pelo botão **Calcular**.
+- Salvamento sob demanda na API pelo botão **Salvar**.
+- Cálculo de dias corridos, pernoites, quantidades integrais e parciais, valores e total.
+- Tratamento automático de sábado, domingo e feriado nacional no retorno como retorno integral.
+- Opção para marcar feriado municipal no retorno.
+- Resumo do cálculo em uma aba própria, atualizado após o cálculo.
+- Impressão ou exportação para PDF pelo botão **Imprimir / PDF**, reunindo **Resumo do cálculo**, **Tabelas de diárias** e **Parâmetros e Configurações** em um documento no modelo institucional (cabeçalho com logotipo e rodapé).
+- Consulta das tabelas de diárias integrais e parciais em uma aba própria.
+- Consulta dos grupos por cargo/função e das regras de retorno na aba **Parâmetros e Configurações**.
+- Envio dos dados do cálculo para a API local configurada no frontend somente pelo botão **Salvar**.
+- Navegação por abas; a rolagem do conteúdo ocorre dentro da aba ativa.
+- Rodapé de identidade visual compartilhado por todas as abas.
 
 O frontend não lê nem grava diretamente nessa planilha. O botão **Salvar** envia o cálculo para uma API externa ao projeto; a integração dessa API com a planilha, assim como as permissões de acesso, deve ser configurada no backend.
 

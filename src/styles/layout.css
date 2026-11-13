@@ -45,8 +45,8 @@
 }
 
 .calculo-col-resultados {
-  background-color: #fcfcfc;
+  background-color: var(--panel);
   padding: 15px;
-  border-radius: 8px;
-  border: 1px solid #eaeaea;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
 }

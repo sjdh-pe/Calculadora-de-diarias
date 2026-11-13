@@ -10,34 +10,78 @@ input,
 select,
 textarea {
   width: 100%;
+  min-height: 44px;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   padding: 11px 12px;
+  font: inherit;
   font-size: 14px;
-  background: #fff;
+  background: var(--surface);
   color: var(--ink);
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: var(--line-strong);
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  border-color: var(--focus);
+  box-shadow: var(--focus-ring);
 }
 
 input[readonly] {
-  background: #f9fafb;
-  color: #374151;
+  background: var(--readonly-bg);
+  color: var(--readonly-ink);
   font-weight: 700;
 }
 
 .check-box {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   min-height: 46px;
   padding: 10px 12px;
   border: 1px solid var(--line);
-  border-radius: 10px;
-  background: #fff;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+.check-box:hover {
+  border-color: var(--line-strong);
+}
+
+.check-box:focus-within {
+  border-color: var(--focus);
+  box-shadow: var(--focus-ring);
 }
 
 .check-box input {
   width: auto;
+  min-height: auto;
+  margin-top: 2px;
   transform: scale(1.2);
+  transform-origin: top left;
+}
+
+/* O anel de foco fica no container (.check-box), não no controle */
+.check-box input:focus-visible {
+  outline: none;
+}
+
+.check-box label {
+  display: block;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink);
+  cursor: pointer;
 }
 
 .hint {
@@ -45,4 +89,16 @@ input[readonly] {
   font-size: 12px;
   color: var(--muted);
   line-height: 1.45;
+}
+
+/* Campos inválidos (aria-invalid) */
+input[aria-invalid="true"],
+select[aria-invalid="true"] {
+  border-color: var(--bad);
+}
+
+input[aria-invalid="true"]:focus-visible,
+select[aria-invalid="true"]:focus-visible {
+  border-color: var(--bad);
+  box-shadow: var(--bad-ring);
 }
